@@ -1,0 +1,17 @@
+RewriteEngine On
+RewriteBase /
+
+# Stop infinite loops
+RewriteCond %{ENV:REDIRECT_STATUS} 200
+RewriteRule ^ - [L]
+
+# Exclude existing files and directories
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Handle username/business-plan
+RewriteRule ^([^/]+)/business\-plan/?$ referral-router.php?user=$1&page=business-plan [L,QSA]
+
+# Handle username (profile/landing)
+RewriteRule ^([^/]+)/?$ referral-router.php?user=$1 [L,QSA]
